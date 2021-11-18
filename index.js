@@ -92,6 +92,14 @@ async function run() {
             const result = await ordersCollection.deleteOne(query);
             res.json(result);
         })
+        // update status to shipped from pending
+        app.put('/confirmation/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const updateStatus = { $set: { status: 'shipped' } };
+            const result = await ordersCollection.updateOne(query, updateStatus);
+            res.json(result)
+        })
         // add user to db
         app.post('/users', async (req, res) => {
             const user = req.body;
